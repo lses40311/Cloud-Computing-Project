@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 			test = (TextView) findViewById(R.id.testing) ;
 			
 			for(int i = 0 ; i < wifi_list.size() ; i++ ){
-				test.clearComposingText();
+				test.setText("");
 				test.append(wifi_list.get(i).BSSID);
 				test.append(String.valueOf(wifi_list.get(i).level));
 				test.append("\n") ;
