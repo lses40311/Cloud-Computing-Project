@@ -6,21 +6,21 @@
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-28a95f8ce41287fafc778490a049097e1ff80b6f.jar" />
+        <dex dex="C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-28a95f8ce41287fafc778490a049097e1ff80b6f.jar" />
     </item>
     <item
-        jar="C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3e4a99dc7cc1ff7c5fec34aebf7c3033619964fd.jar" />
+        <dex dex="C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d40f1407fdd403341d9abeb87e0d21b593190667.jar" />
     </item>
     <item
-        jar="C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jar="C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\classes-80b51726a73a51e5be8989d84a8b6c29ba3b7f95.jar" />
+        <dex dex="C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\classes-02ce0faf13ca88876df15f7414b4414ef14816f5.jar" />
     </item>
 
 </items>

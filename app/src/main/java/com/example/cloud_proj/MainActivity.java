@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 			 // send data to server here
 			
 		    MyClientTask myClientTask = new MyClientTask(
-		    	       "140.113.179.18",5577 , wifi_list.get(0).BSSID );
+		    	       "140.113.179.18", 5566 , wifi_list.get(0).BSSID + "\n" );
 		    myClientTask.execute();
 			setContentView(R.layout.activity_main) ;
             classroom = (TextView) findViewById(R.id.classroom) ;
@@ -83,14 +83,13 @@ public class MainActivity extends Activity {
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
                     if( msg.what == 1 ){
-                        classroom.setText(msg.obj.toString()) ;
+                        classroom.setText((String)msg.obj) ;
                     }else{
                         Log.d("handler" , "unmatch") ;
                     }
                 }
             } ;
 			unregisterReceiver(this);
-			
 		}
 
 	}
@@ -100,8 +99,7 @@ public class MainActivity extends Activity {
 		String dstAddress;
 		String send_msg ;
 		int dstPort;
-		String response = "";
-		  
+
 		MyClientTask(String addr, int port , String msg){
 			dstAddress = addr;
 			dstPort = port;
@@ -112,56 +110,44 @@ public class MainActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
             Socket socket = new Socket();
             InetSocketAddress isa = new InetSocketAddress(dstAddress, dstPort);
-			Log.d("in the thread" , " start thread") ;
+
+            Log.d("in the thread" , " start thread +param " + send_msg ) ;
 			try {
                 socket.connect(isa, 10000);
 
                 if (socket.isConnected()) Log.i("Chat", "Socket Connected");
                 BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
-//			    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
-			    byte[] buffer = new byte[1024];
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+
+                String recv_msg = new String() ;
                 String output = "wifistatus" ; // header
-			    
-			    int bytesRead;
-			    InputStream inputStream = socket.getInputStream();
+
 
                 //sending message
                 out.write(output.concat(send_msg).getBytes() , 0, send_msg.length()+10);
-                Log.e("send" , output + "=====had been read!") ;
-//                byteArrayOutputStream.write(output.concat(send_msg).getBytes() , 0, send_msg.length()) ;
+                out.flush();
+                Log.d("send" , output.concat(send_msg) + "=====had been send!") ;
 
                 //receiving message
-
-                if((bytesRead = inputStream.read(buffer)) != -1 ) Log.e("recv" , "error") ;
-                Log.e("recv" , String.valueOf(bytesRead) + " had been read!") ;
+                recv_msg = in.readLine() ;
+                Log.d("recv" , recv_msg + "===had been read!") ;
 
                 // pass message to handler
                 Message toHandle  = new Message() ;
                 toHandle.what = 1 ;
-                toHandle.obj = buffer.toString() ;
-//                toHandle.setData(new Bundle().se );
+                toHandle.obj = recv_msg ;
 
-			    /*
-			     * notice:
-			     * inputStream.read() will block if no data return
-			     */
-/*			    
-			    while ((bytesRead = inputStream.read(buffer)) != -1){
-			    	byteArrayOutputStream.write(buffer, 0, bytesRead);
-			        response += byteArrayOutputStream.toString("UTF-8");
-			    }
-*/	
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 			    e.printStackTrace();
-			    response = "UnknownHostException: " + e.toString();
 			} catch (IOException e) {
 			    // TODO Auto-generated catch block
 			    e.printStackTrace();
-			    response = "IOException: " + e.toString();
 			}finally{
 			    if(socket != null){
 				    try {
+                        Log.d("finnaly" , "socket close") ;
 				    	socket.close();
 				    } catch (IOException e) {
 				      // TODO Auto-generated catch block

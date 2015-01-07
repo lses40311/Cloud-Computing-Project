@@ -1,4 +1,4 @@
-C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\classes\debug
-C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-28a95f8ce41287fafc778490a049097e1ff80b6f.jar
-C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3e4a99dc7cc1ff7c5fec34aebf7c3033619964fd.jar
-C:\Users\poyuan\AndroidstudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\classes-80b51726a73a51e5be8989d84a8b6c29ba3b7f95.jar
+C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\classes\debug
+C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-28a95f8ce41287fafc778490a049097e1ff80b6f.jar
+C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d40f1407fdd403341d9abeb87e0d21b593190667.jar
+C:\Users\poyuan\AndroidStudioProjects\cloud_proj\app\build\intermediates\pre-dexed\debug\classes-02ce0faf13ca88876df15f7414b4414ef14816f5.jar
