@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -33,7 +34,9 @@ public class MainActivity extends Activity {
 	TextView classroom  ;
     TextView teacher ;
     TextView course ;
-    Button refresh ;
+    TextView chatroom ;
+    EditText send_msg ;
+    Button refresh , send ;
     RatingBar bar ;
     Handler receivefromserver ;
     Socket socket ;
@@ -48,7 +51,7 @@ public class MainActivity extends Activity {
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         socket = new Socket();
-        connect_thread connect_toserver = new connect_thread( "140.113.179.18" , 7788 );
+        connect_thread connect_toserver = new connect_thread( "140.113.179.18" , 5566 );
         connect_toserver.execute() ;
 
 	}
@@ -71,7 +74,7 @@ public class MainActivity extends Activity {
          * what = 1 : course update
          * what = 2 : connect to server
          * what = 3 : refresh score
-         * what = 4 : score the course // not used
+         * what = 4 : refresh chatroom // not used
          *
          *
         *******************/
@@ -116,6 +119,28 @@ public class MainActivity extends Activity {
                     refresh = (Button) findViewById(R.id.button) ;
                     score = (TextView) findViewById(R.id.score) ;
                     bar = (RatingBar) findViewById(R.id.ratingBar) ;
+                    send_msg = (EditText) findViewById(R.id.sendmsg) ;
+                    chatroom = (TextView) findViewById(R.id.chatroom) ;
+                    send = (Button) findViewById(R.id.send_btn) ;
+
+                    send.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            MyClientTask chat = new MyClientTask( in , 4 );
+                            chat.execute();
+                            try {
+                                String x = send_msg.getText().toString() ;
+                                send_msg.setText("");
+                                out.write(("CH"+ x + "\n").getBytes());
+                                out.flush();
+                                Log.d("send", x + "===had been send!");
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                     bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -149,6 +174,8 @@ public class MainActivity extends Activity {
                     });
                 }else if(msg.what == 3){
                     score.setText((String) msg.obj) ;
+                }else if(msg.what == 4){
+                    chatroom.append((String) msg.obj + "\n") ;
                 }else{
                     Log.d("handler" , "unmatch") ;
                 }
