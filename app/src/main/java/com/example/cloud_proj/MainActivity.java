@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         socket = new Socket();
-        connect_thread connect_toserver = new connect_thread( "140.113.179.18" , 5566 );
+        connect_thread connect_toserver = new connect_thread( "140.113.179.18" , 5566 , socket );
         connect_toserver.execute() ;
 
 	}
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
         super.onResume();
         /*******************
          * what = 1 : course update
-         * what = 2 : connect to server
+         * what = 2 : send WS
          * what = 3 : refresh score
          * what = 4 : refresh chatroom // not used
          *
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
                     try{
                         // connect and send data to server here
                         out = new BufferedOutputStream(socket.getOutputStream());
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
 
                         //sending message WIFI STATUS
                         out.write(("WS"+((List<ScanResult>)msg.obj).get(0).BSSID+"\n").getBytes() , 0, ((List<ScanResult>)msg.obj).get(0).BSSID.length()+3);
@@ -101,8 +101,8 @@ public class MainActivity extends Activity {
                         Log.d("send" , "WS"+((List<ScanResult>)msg.obj).get(0).BSSID+"\n" + "=====had been send!") ;
 
                         //handle recv msg
-                        MyClientTask myClientTask = new MyClientTask( in , 1 );
-                        myClientTask.execute();
+//                        MyClientTask myClientTask = new MyClientTask( in , 1 );
+//                        myClientTask.execute();
 
                     }catch (UnknownHostException e) {
                         // TODO Auto-generated catch block
@@ -126,8 +126,8 @@ public class MainActivity extends Activity {
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            MyClientTask chat = new MyClientTask( in , 4 );
-                            chat.execute();
+//                            MyClientTask chat = new MyClientTask( in , 4 );
+//                            chat.execute();
                             try {
                                 String x = send_msg.getText().toString() ;
                                 send_msg.setText("");
@@ -144,8 +144,8 @@ public class MainActivity extends Activity {
                     bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            MyClientTask rate = new MyClientTask( in , 3 );
-                            rate.execute();
+//                            MyClientTask rate = new MyClientTask( in , 3 );
+//                            rate.execute();
                             try {
                                 out.write(("RT"+ String.valueOf(rating) + "\n").getBytes(), 0, 6);
                                 out.flush();
@@ -162,8 +162,8 @@ public class MainActivity extends Activity {
                             try {
                                 out.write("UR\n".getBytes(), 0, 3);
                                 out.flush();
-                                MyClientTask UR_recv = new MyClientTask(in, 3);
-                                UR_recv.execute();
+//                                MyClientTask UR_recv = new MyClientTask(in, 3);
+//                                UR_recv.execute();
                                 Log.d("send", "UR===had been send!");
                             } catch (IOException e) {
                                 // TODO Auto-generated catch block
@@ -258,7 +258,59 @@ public class MainActivity extends Activity {
 		  
 	}
 
+    public class connect_thread extends AsyncTask<Void, Void, Void> {
+        String s_addr ;
+        int s_port ;
+        Socket socket ;
+        connect_thread(String addr , int port , Socket input_socket ){
+            s_addr = addr ;
+            s_port = port ;
+            socket = input_socket ;
+        }
 
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            Log.d("in the thread" , " connecting thread") ;
+            InetSocketAddress isa = new InetSocketAddress(s_addr, s_port) ;
+            try {
+                socket.connect(isa, 10000);
+                if (socket.isConnected()) Log.i("Chat", "Socket Connected");
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch (UnknownHostException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            while(true){
+                try {
+                    String recv_msg = new String() ;
+
+                    //receiving message
+                    recv_msg = in.readLine() ;
+                    Log.d("recv" , recv_msg + "===had been recv!") ;
+
+                    // pass message to handler
+                    Message toHandle  = new Message() ;
+                    toHandle.what = Integer.valueOf(recv_msg.substring(0,1)) ;
+                    toHandle.obj = recv_msg.substring(1) ;
+                    toHandle.setTarget(receivefromserver);
+                    toHandle.sendToTarget();
+
+                } catch (UnknownHostException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+/*
     public class connect_thread extends AsyncTask<Void, Void, Void> {
         String s_addr ;
         int s_port ;
@@ -283,13 +335,7 @@ public class MainActivity extends Activity {
             }
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-
-    }
+    }*/
 
 }
 
